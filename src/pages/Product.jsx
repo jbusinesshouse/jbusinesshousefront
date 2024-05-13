@@ -89,18 +89,15 @@ const Product = () => {
                                 <div className="disTabItem">Price</div>
                             </div>
                             <div className={quantity > productData.wholeMinQuan - 1 ? "disTabRow" : "disTabRow active"}>
-                                <div className="disTabItem">1 {productData.hasWholesale && `- ${productData.wholeMinQuan - 1}`}</div>
+                                <div className="disTabItem">1 - {productData.wholeMinQuan - 1}</div>
                                 {/* <div className="disTabItem">--</div> */}
                                 <div className="disTabItem">&#2547; {productData.disPrice}</div>
                             </div>
-                            {
-                                productData.hasWholesale &&
-                                <div className={quantity < productData.wholeMinQuan ? "disTabRow" : "disTabRow active"}>
-                                    <div className="disTabItem">{productData.wholeMinQuan}+</div>
-                                    {/* <div className="disTabItem">30 %</div> */}
-                                    <div className="disTabItem">&#2547; {productData.wholePrice}</div>
-                                </div>
-                            }
+                            <div className={quantity < productData.wholeMinQuan ? "disTabRow" : "disTabRow active"}>
+                                <div className="disTabItem">{productData.wholeMinQuan}+</div>
+                                {/* <div className="disTabItem">30 %</div> */}
+                                <div className="disTabItem">&#2547; {productData.wholePrice}</div>
+                            </div>
                         </div>
 
                         <div className="proAction">

@@ -12,6 +12,7 @@ import ProductUpload from './pages/ProductUpload';
 import Orders from './pages/Orders';
 import { AuthProvider } from './context/AuthContext';
 import ThankYou from './pages/ThankYou';
+import Search from './pages/Search';
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/shop' element={<Shop />} />
+            <Route path='/search/:id' element={<Search />} />
             <Route path='/product/:id' element={<Product />} />
             <Route path='/checkout/:id' element={<Checkout />} />
             <Route path='/login' element={<Login />} />

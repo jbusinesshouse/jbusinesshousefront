@@ -77,6 +77,62 @@ header .container {
 
 
 
+.searchWrap {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+}
+.searchOverlay {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #0000004b;
+}
+.searchCon {
+    width: 600px;
+    max-width: 80%;
+    height: 200px;
+    background-color: #fff;
+    border-radius: 15px;
+    padding: 25px;
+    position: relative;
+    z-index: 10;
+}
+.searchCon h2 {
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+.searchCon form {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.searchCon form input {
+    width: calc(100% - 120px);
+    height: 48px;
+    border: 1px solid #ccc;
+    padding: 0 15px;
+}
+.searchCon form button {
+    width: 110px;
+    height: 48px;
+    border: none;
+    background-color: #1346af;
+    color: #fff;
+    font-size: 16px;
+}
+
+
+
 
 
 @media (max-width: 550px) {
@@ -119,5 +175,22 @@ header .container {
     }
     .headerBtns .menuIcon {
         display: block;
+    }
+
+
+    .searchCon h2 {
+        font-size: 24px;
+    }
+    .searchCon {
+        padding: 25px 15px;
+    }
+    .searchCon form input {
+        width: calc(100%  - 70px);
+        height: 42px;
+    }
+    .searchCon form button {
+        width: 60px;
+        height: 42px;
+        font-size: 14px;
     }
 }

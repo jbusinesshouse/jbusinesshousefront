@@ -8,12 +8,12 @@ import Loading from '../components/Loading';
 
 
 
-const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
-const Shop = () => {
-    const [reservedProducts, setReservedProducts] = useState([])
+
+const Search = () => {
     const [products, setProducts] = useState([])
-    const [category, setCategory] = useState("all")
     const [isLoading, setIsLoading] = useState(false)
+    const productName = window.location.pathname.split("/search/")[1].replace("%20"," ")
+    console.log(productName);
     useEffect(() => {
         window.scrollTo({
             top: 0,
@@ -21,26 +21,15 @@ const Shop = () => {
         });
 
         setIsLoading(true)
-        axios.get(`${process.env.REACT_APP_API_KEY}/product/getProducts`).then(res => {
-            // const revData = res.data.reverse()
-            // Generate an array of indices
-            let indices = Array.from({ length: res.data.length }, (_, i) => i);
-            // Shuffle indices
-            for (let i = indices.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [indices[i], indices[j]] = [indices[j], indices[i]];
-            }
-            // Create a new array using shuffled indices
-            const shuffledArray = indices.map(index => res.data[index]);
-            setReservedProducts(shuffledArray);
-
-            setProducts(shuffledArray)
+        axios.post(`${process.env.REACT_APP_API_KEY}/product/search`, { name: productName }).then(res => {
+            const revData = res.data.reverse()
+            setProducts(revData)
             setIsLoading(false)
         }).catch(err => {
             console.log(err);
             setIsLoading(false)
         })
-    }, [])
+    }, [productName])
 
     const [itemOffset, setItemOffset] = useState(0);
 
@@ -58,17 +47,6 @@ const Shop = () => {
         setItemOffset(newOffset);
     };
 
-    const handleCategory = (val) => {
-        setCategory(val)
-        if (val === "all") {
-            setProducts(reservedProducts)
-        } else {
-            const filteredVal = reservedProducts.filter(item => {
-                return item.category === val
-            })
-            setProducts(filteredVal)
-        }
-    }
 
 
     return (
@@ -82,13 +60,6 @@ const Shop = () => {
                 <div className="container">
                     <div className="shopHeading">
                         <h3>Showing {products.length} results</h3>
-                        <select value={category} onChange={e => handleCategory(e.target.value)}>
-                            <option value="all">All</option>
-                            <option value="panjabi">Panjabi</option>
-                            <option value="shirt">Shirt</option>
-                            <option value="pant">Pant</option>
-                            <option value="others">Others</option>
-                        </select>
                     </div>
                     <div className="productWrap">
                         {
@@ -117,4 +88,4 @@ const Shop = () => {
     )
 }
 
-export default Shop
+export default Search

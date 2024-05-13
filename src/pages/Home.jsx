@@ -8,6 +8,7 @@ import Loading from '../components/Loading'
 
 const Home = () => {
   const [products, setProducts] = useState([])
+  const [featured, setFeatured] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   useEffect(() => {
     window.scrollTo({
@@ -18,7 +19,12 @@ const Home = () => {
     setIsLoading(true)
     axios.get(`${process.env.REACT_APP_API_KEY}/product/getProducts`).then(res => {
       const revData = res.data.reverse()
+      const revFeatured = revData.filter(val => {
+        return val.isFeatured
+      })
+
       setProducts(revData)
+      setFeatured(revFeatured)
       setIsLoading(false)
     }).catch(err => {
       console.log(err);
@@ -49,7 +55,7 @@ const Home = () => {
           <h2>Featured Products</h2>
           <div className="productWrap">
             {
-              products.length > 0 && products.map((val, i) => {
+              featured.length > 0 && featured.slice(0, 12).map((val, i) => {
                 return <SingleProduct data={val} key={i} />
               })
             }
@@ -62,7 +68,7 @@ const Home = () => {
           <h2>All Products</h2>
           <div className="productWrap">
             {
-              products.length > 0 && products.map((val, i) => {
+              products.length > 0 && products.slice(0, 16).map((val, i) => {
                 return <SingleProduct data={val} key={i} />
               })
             }

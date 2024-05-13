@@ -9,7 +9,6 @@ import Loading from '../components/Loading'
 
 const ProductUpload = () => {
   const [isUploading, setIsUploading] = useState(false)
-  const [wholesaleActive, setWholesaleActive] = useState(false)
   const [selectedSize, setSelectedSize] = useState([])
   const [preImg, setPreImg] = useState(null)
   const [name, setName] = useState("")
@@ -54,7 +53,7 @@ const ProductUpload = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (name && description && category && weight > 0 && image && price > 0 && disPrice > 0 && wholesaleActive && wholeMinQuan > 0 && wholePrice > 0 && storeId) {
+    if (name && description && category !== "select" && weight > 0 && image && price > 0 && disPrice > 0 && wholeMinQuan > 0 && wholePrice > 0 && storeId) {
       setIsLoading(true)
       const fileExtension = image.name.split('.').pop();
       const currentDate = new Date();
@@ -63,30 +62,7 @@ const ProductUpload = () => {
       imageFile.append("image", image, uniqueFilename)
 
       axios.post(`${process.env.REACT_APP_API_KEY}/uploadImage`, imageFile).then(res => {
-        axios.post(`${process.env.REACT_APP_API_KEY}/product/saveProduct`, { name, description, category, size: selectedSize, weight, image: uniqueFilename, price, disPrice, hasWholesale: wholesaleActive, wholeMinQuan, wholePrice, storeId }).then(res => {
-          console.log(res.data);
-          setIsLoading(false)
-          navigate("/")
-        }).catch(err => {
-          setIsLoading(false)
-          window.alert("Something went wrong!")
-          console.log("Product error");
-        })
-      }).catch(err => {
-        setIsLoading(false)
-        window.alert("Something went wrong!")
-        console.log("Image error");
-      })
-    } else if (name && description && category && weight > 0 && image && price > 0 && disPrice > 0 && !wholesaleActive && storeId) {
-      setIsLoading(true)
-      const fileExtension = image.name.split('.').pop();
-      const currentDate = new Date();
-      const uniqueFilename = `${image.name.split('.')[0]}-${currentDate.getTime()}.${fileExtension}`;
-      const imageFile = new FormData()
-      imageFile.append("image", image, uniqueFilename)
-
-      axios.post(`${process.env.REACT_APP_API_KEY}/uploadImage`, imageFile).then(res => {
-        axios.post(`${process.env.REACT_APP_API_KEY}/product/saveProduct`, { name, description, category, size: selectedSize, weight, image: uniqueFilename, price, disPrice, hasWholesale: wholesaleActive, storeId }).then(res => {
+        axios.post(`${process.env.REACT_APP_API_KEY}/product/saveProduct`, { name, description, category, size: selectedSize, weight, image: uniqueFilename, price, disPrice, wholeMinQuan, wholePrice, storeId }).then(res => {
           console.log(res.data);
           setIsLoading(false)
           navigate("/")
@@ -130,6 +106,7 @@ const ProductUpload = () => {
                 <option value="shirt">Shirt</option>
                 <option value="pant">Pant</option>
                 <option value="panjabi">Panjabi</option>
+                <option value="others">Others</option>
               </select>
             </div>
             <div className="proUpInp">
@@ -186,24 +163,16 @@ const ProductUpload = () => {
               <input type="number" name="disPrice" id="disPrice" value={disPrice} onChange={e => setDisPrice(e.target.value)} />
             </div>
 
-            <div className="wholeSaleCon">
-              <input type="checkbox" name="wholeCon" id="wholeCon" onChange={e => setWholesaleActive(e.target.checked)} />
-              <label htmlFor="wholeCon">Add wholesale price</label>
-            </div>
-
-            {
-              wholesaleActive &&
-              <div className="wholeSalePart">
-                <div className="proUpInp">
-                  <label htmlFor="wholeQuan">Wholesale minimum quantity</label>
-                  <input type="number" name="wholeQuan" id="wholeQuan" value={wholeMinQuan} onChange={e => setWholeMinQuan(e.target.value)} />
-                </div>
-                <div className='proUpInp'>
-                  <label htmlFor="wholePrice">Wholesale price</label>
-                  <input type="number" name="wholePrice" id="wholePrice" value={wholePrice} onChange={e => setWholePrice(e.target.value)} />
-                </div>
+            <div className="wholeSalePart">
+              <div className="proUpInp">
+                <label htmlFor="wholeQuan">Wholesale minimum quantity</label>
+                <input type="number" name="wholeQuan" id="wholeQuan" value={wholeMinQuan} onChange={e => setWholeMinQuan(e.target.value)} />
               </div>
-            }
+              <div className='proUpInp'>
+                <label htmlFor="wholePrice">Wholesale price</label>
+                <input type="number" name="wholePrice" id="wholePrice" value={wholePrice} onChange={e => setWholePrice(e.target.value)} />
+              </div>
+            </div>
             <button type='submit'>Upload Product</button>
           </form>
         </div>
